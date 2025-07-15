@@ -143,6 +143,7 @@ def hf_to_mcore_config_dense(
         add_bias_linear=False,
         add_qkv_bias=qkv_bias,
         qk_layernorm=qk_layernorm,
+        apply_rope_fusion=True, # TODO(kunlunl): Not merged.
     )
     # override_transformer_config_kwargs as kwargs shall never be none
     args.update(override_transformer_config_kwargs)

@@ -1182,6 +1182,8 @@ class RayPPOTrainer:
 
                             del gen_baseline_batch, gen_baseline_output
 
+                    # print("[kunlunl] seqlens: ", gen_batch_output.batch['attention_mask'].sum(-1))
+
                     batch.non_tensor_batch["uid"] = np.array(
                         [str(uuid.uuid4()) for _ in range(len(batch.batch))], dtype=object
                     )
@@ -1198,6 +1200,8 @@ class RayPPOTrainer:
                     # TODO: Decouple the DP balancing and mini-batching.
                     if self.config.trainer.balance_batch:
                         self._balance_batch(batch, metrics=metrics)
+
+                    # print("[kunlunl] seqlens after balance: ", batch.batch['attention_mask'].sum(-1))
 
                     # compute global_valid tokens
                     batch.meta_info["global_token_num"] = torch.sum(batch.batch["attention_mask"], dim=-1).tolist()

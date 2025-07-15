@@ -382,6 +382,13 @@ class DataParallelPPOActor(BasePPOActor):
                 if self.config.use_dynamic_bsz:
                     max_token_len = self.config.ppo_max_token_len_per_gpu * self.ulysses_sequence_parallel_size
                     micro_batches, _ = prepare_dynamic_batch(mini_batch, max_token_len=max_token_len)
+                    # total_lens = []
+                    # for micro_batch in micro_batches:
+                    #     total_len = 0
+                    #     for i in range(len(micro_batch)):
+                    #         total_len += micro_batch[i]['attention_mask'].sum()
+                    #     total_lens.append(total_len)
+                    # print(f"[kunlunl] dp_actor, num_micro_batches: {len(micro_batches)}, total_lens: {total_lens}")
                 else:
                     self.gradient_accumulation = (
                         self.config.ppo_mini_batch_size // self.config.ppo_micro_batch_size_per_gpu

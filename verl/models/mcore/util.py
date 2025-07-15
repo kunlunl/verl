@@ -43,6 +43,8 @@ def preprocess_packed_seqs(
     cu_seqlens[1:] = torch.cumsum(seqlens_in_batch, dim=0)
     cu_seqlens_padded = torch.zeros(batch_size + 1, dtype=torch.int32, device=input_ids.device)
     cu_seqlens_padded[1:] = torch.cumsum(seqlens_in_batch_padded, dim=0)
+    # TODO(kunlunl): This is a sync, does it affect the performance?
+    # print(f"[kunlunl] preprocess_packed_seqs, seqlens_in_batch_padded.device: {seqlens_in_batch_padded.device}")
     max_seqlen_in_batch = seqlens_in_batch_padded.max().item()
 
     shape = list(input_ids.shape[1:])

@@ -38,6 +38,9 @@ def gptmodel_forward(
         batch_size, seq_len = attention_mask.shape[:2]
         input_ids_rmpad, packed_seq_params = preprocess_packed_seqs(input_ids, attention_mask, pre_process=pre_process)
         input_ids_rmpad = input_ids_rmpad.contiguous()
+        # print(f"[kunlunl] gptmodel_forward, input_ids_rmpad.shape: {input_ids_rmpad.shape}")
+        # print(f"[kunlunl] gptmodel_forward, packed_seq_params: {packed_seq_params}")
+        # print(f"[kunlunl] gptmodel_forward, type(model): {type(model)}")
         output_orig = model(
             input_ids=input_ids_rmpad,
             attention_mask=None,

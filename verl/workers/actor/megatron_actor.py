@@ -366,6 +366,9 @@ class MegatronPPOActor(BasePPOActor):
             else:
                 micro_batches, indices = rearrange_micro_batches(batch=mini_batch.batch, max_token_len=max_token_len)
             total_seqlen = max_token_len
+            # for _debug_counter, micro_batch in enumerate(micro_batches):
+            #     tokens = [micro_batch[i]['attention_mask'].sum().cpu().item() for i in range(len(micro_batch))]
+            #     print(f"[kunlunl] megatron_actor, {_debug_counter}: (num_seqs, total_tokens, tokens): {[len(tokens), sum(tokens), tokens]}")
         else:
             assert micro_batch_size is not None, (
                 "micro_batch_size is needed to be passed in when not using dynamic batch size"
@@ -501,6 +504,8 @@ class MegatronPPOActor(BasePPOActor):
             label_mask[:, -1] = False
 
             from verl.models.mcore import get_mcore_forward_fn, get_mcore_forward_fused_fn
+
+            # print(f"[kunlunl] megatron_actor, input_ids: {input_ids.shape}")
 
             if self.use_fused_kernels:
                 forward_fn = get_mcore_forward_fused_fn(self.hf_config)
